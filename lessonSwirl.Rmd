@@ -42,14 +42,31 @@ noisedf1 <- tbl_df(noisedf)
 
 #use select() function to select variable (column) of interest within the dataframe
 
-noisepeak <- select(noisedf1, bu, oeltype = peak_db) #as example
+noisepeak <- select(noisedf1, bu, oeltype) #as example
 
-noisemax <- select(noisedf1, bu, oeltype = stel_dba)
+noisemax <- select(noisedf1, bu, oeltype)
+
+noisetwa <- select(noisedf1, bu, oeltype)
+
+#use filter() function to select subset of column
+
+peak_bu <- filter(noisepeak, oeltype == "peak_db")
+
+max_bu < filter(noisepeak, oeltype == "stel_dba")
+
+#break up your dataset into groups of rows based on
+#the values of one or more variables. The group_by() function is reponsible for doing this.
+
+group_by(noisedf, oeltype = peak_dB)
+
+summarize(by_bu, mean(oeltype))
+
 
 ```
 
 
 Descriptive Data Analysis
+...
 
 Statistical Inferences
 
@@ -63,6 +80,17 @@ swirl()
 
 ```
 
+GitHub
+
+```{r}
+#You cannot push anything that hasn't been committed yet. The order of operations is:
+
+#1. Make your change.
+# git add - this stages your changes for committing
+# git commit - this commits your staged changes locally
+# git push - this pushes your committed changes to a remote
+
+```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
