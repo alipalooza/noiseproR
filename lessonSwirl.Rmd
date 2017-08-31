@@ -31,7 +31,20 @@ Data Cleaning & Wrangling using dplyr, tidyr
 ```{r}
 library(dplyr) # required prior to use functions in dplyr package
 
+```
 
+```{r}
+#pass your data frame using tbl_df function (e.g., noisedf)
+
+noisedf1 <- tbl_df(noisedf)
+
+#explore as.tibble function as replacement to tbl_df function
+
+#use select() function to select variable (column) of interest within the dataframe
+
+noisepeak <- select(noisedf1, bu, oeltype = peak_db) #as example
+
+noisemax <- select(noisedf1, bu, oeltype = stel_dba)
 
 ```
 
