@@ -3,27 +3,47 @@ title: "R Notebook_NoiseproR"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+# Introduction
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+This R notebook serves to record statistical analysis process (i.e., method, consideration, R script) for noise exposure profiling using R. The objectives are to facilitate review of all statistical method adopted as well as learning to ensure reproducibility of this study in the future.
 
-```{r}
-plot(cars)
-```
+# Pre-requisite
 
-Data Upload
-
-- to upload data frame in .csv use the following function and assign to a new variables. There are many other ways to load data from .csv as explained in YouTube
+The following packages need to be installed in order to run the codes provided in this document:
 
 ```{r}
-mydf <- read.csv(path2csv, stringsAsFactors = FALSE)
-
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("ggplot2")
+install.packages("knitr")
 ```
-the following are functions which can be used to explore uploaded data frame. Use help function within R to understand the arguments / values required to use respective functions
+
+# Data upload
+
+Data extracted from noise exposure reports were recorded in Microsoft Excel spredsheet (Excel). Basic data preparation (i.e., cleaning, clustering, verification of missing data) was done in Excel. Final steps before analysis the data in R was to save the spreadsheet in comma separated format (.csv). The file was saved by the name "noiseprof.csv". Due to confidentiality, the raw data file cannot be attached in this document, however the codes used can be generalized for other applications.
+
+Step 1: Upload dataset ("noiseprof.csv") into R
+To upload data frame in .csv use the following function and assign to a new variables (optional). There are many other ways to load data from .csv as explained in YouTube
+
+```{r}
+mydf <- read.csv(noiseprof.csv, stringsAsFactors = FALSE)
+```
+
+Step 2: Explore "noiseprof.csv" 
+The following are functions which can be used to explore uploaded data frame. Use help function within R to understand the arguments / values required to use respective functions
 
 ```{r}
 dim() # to have overview of the dataframe (row, column)
+head()
+tail()
+str()
+
 ```
+
+# List of variables under study
+
+1. 
+
 
 
 Data Cleaning & Wrangling using dplyr, tidyr
@@ -92,9 +112,11 @@ GitHub
 
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+# Reference
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+1. Swirl
+2. R
+3. R Studio
 
 
 
