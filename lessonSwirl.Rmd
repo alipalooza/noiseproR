@@ -22,12 +22,21 @@ install.packages("knitr")
 
 Data extracted from noise exposure reports were recorded in Microsoft Excel spredsheet (Excel). Basic data preparation (i.e., cleaning, clustering, verification of missing data) was done in Excel. Final steps before analysis the data in R was to save the spreadsheet in comma separated format (.csv). The file was saved by the name "noiseprof.csv". Due to confidentiality, the raw data file cannot be attached in this document, however the codes used can be generalized for other applications.
 
+
 Step 1: Upload dataset ("noiseprof.csv") into R
 To upload data frame in .csv use the following function and assign to a new variables (optional). There are many other ways to load data from .csv as explained in YouTube
 
 ```{r}
 mydf <- read.csv(noiseprof.csv, stringsAsFactors = FALSE)
 ```
+
+Another way you may consider is to upload your dataset in Excel native file (.xlsx or .xls). In doing so, you are required to install "XLConnect" package from CRAN database. This is a matter of preference and just provide you with the alternative way to upload your dataset into R for further analysis.
+
+```{r}
+install.packages("XLConnect") #to install package within R environment
+library("XLconnect") #required in every new session to enable functions within the package
+```
+
 
 Step 2: Explore "noiseprof.csv" 
 The following are functions which can be used to explore uploaded data frame. Use help function within R to understand the arguments / values required to use respective functions
@@ -100,7 +109,7 @@ swirl()
 
 ```
 
-GitHub
+# Version control using GitHub
 
 ```{r}
 #You cannot push anything that hasn't been committed yet. The order of operations is:
@@ -118,5 +127,15 @@ GitHub
 2. R
 3. R Studio
 
+# Other useful codes
+
+```{r}
+getwd() # to confirm working directory for the project
+
+setwd() # to set working directory when required
+
+setwd("/Users/alifffirdausmy/Documents/GitHub/noiseproR") # working directory for this project
+
+```
 
 
