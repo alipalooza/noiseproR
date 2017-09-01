@@ -27,7 +27,7 @@ Step 1: Upload dataset ("noiseprof.csv") into R
 To upload data frame in .csv use the following function and assign to a new variables (optional). There are many other ways to load data from .csv as explained in YouTube
 
 ```{r}
-mydf <- read.csv(noiseprof.csv, stringsAsFactors = FALSE)
+noisedf <- read.csv(noiseprof.csv, stringsAsFactors = FALSE)
 ```
 
 Another way you may consider is to upload your dataset in Excel native file (.xlsx or .xls). In doing so, you are required to install "XLConnect" package from CRAN database. This is a matter of preference and just provide you with the alternative way to upload your dataset into R for further analysis.
@@ -51,21 +51,28 @@ str()
 
 # List of variables under study
 
-1. 
+```{r}
+names(noisedf)
+```
+
+Selection of specific variables of interest will be explained under Data Cleaning Wrangling using dplyr, tidyr section
 
 
 
 Data Cleaning & Wrangling using dplyr, tidyr
 
 ```{r}
+
 library(dplyr) # required prior to use functions in dplyr package
+
+noisedf1 <- tbl_df(noisedf) # pass your data frame using tbl_df function (e.g., noisedf)
+
+gsub() # use to convert factor to integer by replacing characters (e.g., "$", "%"")
 
 ```
 
 ```{r}
-#pass your data frame using tbl_df function (e.g., noisedf)
 
-noisedf1 <- tbl_df(noisedf)
 
 #explore as.tibble function as replacement to tbl_df function
 
