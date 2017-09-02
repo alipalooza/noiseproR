@@ -1,11 +1,14 @@
 ---
 title: "R Notebook_NoiseproR"
+author: Aliff Firdaus Mat Yusoff
+Student ID: KGJ 140066
 output: html_notebook
 ---
 
 # Introduction
 
 This R notebook serves to record statistical analysis process (i.e., method, consideration, R script) for noise exposure profiling using R. The objectives are to facilitate review of all statistical method adopted as well as learning to ensure reproducibility of this study in the future.
+
 
 # Pre-requisite
 
@@ -18,10 +21,10 @@ install.packages("ggplot2")
 install.packages("knitr")
 ```
 
+
 # Data upload
 
 Data extracted from noise exposure reports were recorded in Microsoft Excel spredsheet (Excel). Basic data preparation (i.e., cleaning, clustering, verification of missing data) was done in Excel. Final steps before analysis the data in R was to save the spreadsheet in comma separated format (.csv). The file was saved by the name "noiseprof.csv". Due to confidentiality, the raw data file cannot be attached in this document, however the codes used can be generalized for other applications.
-
 
 Step 1: Upload dataset ("noiseprof.csv") into R
 To upload data frame in .csv use the following function and assign to a new variables (optional). There are many other ways to load data from .csv as explained in YouTube
@@ -37,15 +40,14 @@ install.packages("XLConnect") #to install package within R environment
 library("XLconnect") #required in every new session to enable functions within the package
 ```
 
-
 Step 2: Explore "noiseprof.csv" 
 The following are functions which can be used to explore uploaded data frame. Use help function within R to understand the arguments / values required to use respective functions
 
 ```{r}
 dim() # to have overview of the dataframe (row, column)
-head()
-tail()
-str()
+head() # use together with tail() to check consistentcy of the dataframe
+tail() # use together with head() to check consistentcy of the dataframe
+str() # use to understand structure / category of the variables. here we can identify appropriate method for treatment / analyses (i.e., variables numericals recognizes as factor and vise versa)
 
 ```
 
@@ -55,68 +57,128 @@ str()
 names(noisedf)
 ```
 
-Selection of specific variables of interest will be explained under Data Cleaning Wrangling using dplyr, tidyr section
+Selection of specific variables of interest will be explained under data preparation for statistical analysis section
 
 
 
-Data Cleaning & Wrangling using dplyr, tidyr
+# Data exploration and treatment for statistical analysis
 
-Missing data was treated as follows:
+A) Exploration 
+
+The following functions are useful in exploring the data set:
+
+```{r}
+noisedf1 <- tbl_df(noisedf) # pass your data frame using tbl_df function (e.g., noisedf). Check as.tibble()
+
+summarize()
+
+summarize(by_bu, mean(oeltype)) # as example
+
+which() # to locate missing data, return TRUE values to logical test pass to the function
+
+noisedf1 [which(noisedf1$oel >= 140), ] # as example to look for observations within noisedf1 where oeltype = peak_dB, oel => 140, which()only find TRUE value
+
+noisedf1[noisedf1$oel >= 140, ] # same as above
+
+noisedf1 [noisedf1$variables] # can use to access variables of interest, and apply function as desired.
+
+fin[fin$Revenue >= 9746272, ] #
+
+```
+
+B) Treatment / Wrangling
+
+```{r}
+
+gsub() # use to convert factor to integer by replacing characters (e.g., "$", "%"")
+
+select() # to select variable (column) of interest within the dataframe
+
+noisepeak <- select(noisedf1, bu, oeltype) #as example
+
+noisemax <- select(noisedf1, bu, oeltype) #as example
+
+noisetwa <- select(noisedf1, bu, oeltype) #as example
+
+filter() # to select subset of column
+
+peak_bu <- filter(noisepeak, oeltype == "peak_db") #as example
+
+max_bu <- filter(noisepeak, oeltype == "stel_dba") #as example
+
+group_by() #break up your dataset into groups of rows based on the values of one or more variables.
+
+group_by(noisedf, oeltype = peak_dB) # as example
+
+```
+
+
+C) Missing data
+
+0. Identify
+```{r}
+is.na()
+
+noisedf1 [!complete.cases(noisedf1), ]
+noisedf1[is.na(noisedf1$NRReffective), ] # this will highlight the values == "NA" in NRReffective column of noisedf1 dataset
+noisedf1[is.na(noisedf1$NRReffective) & noisedf1$bu == "dsgas", ] # similar to previous, this add more criteria to the filter ([]) - "in dsgas"
+
+```
 
 1. Verification - for hearing protection type / NRR
 
 2. Median imputation - for hearing protection type / NRR
+```{r}
+med_nrr_wu <- median(noisedf1[noisedf1$seg == "shiftprodtech",  ], na.rm = TRUE) #?median
+
+noisedf1[is.na(noisedf1$NRReffective), ] <- med_nrr_wu #the idea is to find the NA and replace with specific values
+
+```
+
 
 3. Removal - when critical variables were absent (e.g., exposure level, % dose)
-
 ```{r}
+# always back up data set prior to removal of any observations
 
-library(dplyr) # required prior to use functions in dplyr package
+noisedf_backup <- noisedf1
 
-noisedf1 <- tbl_df(noisedf) # pass your data frame using tbl_df function (e.g., noisedf)
-
-gsub() # use to convert factor to integer by replacing characters (e.g., "$", "%"")
-
-```
-
-```{r}
-
-
-#explore as.tibble function as replacement to tbl_df function
-
-#use select() function to select variable (column) of interest within the dataframe
-
-noisepeak <- select(noisedf1, bu, oeltype) #as example
-
-noisemax <- select(noisedf1, bu, oeltype)
-
-noisetwa <- select(noisedf1, bu, oeltype)
-
-#use filter() function to select subset of column
-
-peak_bu <- filter(noisepeak, oeltype == "peak_db")
-
-max_bu < filter(noisepeak, oeltype == "stel_dba")
-
-#break up your dataset into groups of rows based on
-#the values of one or more variables. The group_by() function is reponsible for doing this.
-
-group_by(noisedf, oeltype = peak_dB)
-
-summarize(by_bu, mean(oeltype))
+noisedf2 <- noisedf1 [!is.na(noisedf1), ] # opposite of is.na - identifying row (observation with NA values)
 
 
 ```
 
 
-Descriptive Data Analysis
-...
 
-Statistical Inferences
+# Descriptive Data Analysis
 
-Exploratory Data Analysis (Visual)
+1. 5 summary
 
-Learn R using Swirl
+```{r}
+quantile()
+
+percent_rank()
+
+boxplot()
+
+
+```
+
+
+# Statistical Inferences
+
+
+# Exploratory Data Analysis (Visual)
+
+this sections will provide codes to produce graph / diagram in the text
+
+1. boxplot
+
+2. scatterplot
+
+
+
+
+# Learn R using Swirl
 ```{r}
 library(swirl)
 install_course("Getting and Cleaning Data")
@@ -151,6 +213,7 @@ setwd() # to set working directory when required
 
 setwd("/Users/alifffirdausmy/Documents/GitHub/noiseproR") # working directory for this project
 
+noisedf_0 <- noisedf # backup of original dataset
 ```
 
 
