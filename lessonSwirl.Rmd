@@ -27,7 +27,7 @@ Step 1: Upload dataset ("noiseprof.csv") into R
 To upload data frame in .csv use the following function and assign to a new variables (optional). There are many other ways to load data from .csv as explained in YouTube
 
 ```{r}
-noisedf <- read.csv(noiseprof.csv, stringsAsFactors = FALSE)
+noisedf <- read.csv(noiseprof.csv, na.strings = c("", "NA"))
 ```
 
 Another way you may consider is to upload your dataset in Excel native file (.xlsx or .xls). In doing so, you are required to install "XLConnect" package from CRAN database. This is a matter of preference and just provide you with the alternative way to upload your dataset into R for further analysis.
@@ -60,6 +60,14 @@ Selection of specific variables of interest will be explained under Data Cleanin
 
 
 Data Cleaning & Wrangling using dplyr, tidyr
+
+Missing data was treated as follows:
+
+1. Verification - for hearing protection type / NRR
+
+2. Median imputation - for hearing protection type / NRR
+
+3. Removal - when critical variables were absent (e.g., exposure level, % dose)
 
 ```{r}
 
