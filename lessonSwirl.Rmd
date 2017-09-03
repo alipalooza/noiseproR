@@ -13,7 +13,6 @@ This R notebook serves to record statistical analysis process (i.e., method, con
 # Pre-requisite
 
 The following packages need to be installed in order to run the codes provided in this document:
-
 ```{r}
 install.packages("dplyr")
 install.packages("tidyr")
@@ -28,13 +27,11 @@ Data extracted from noise exposure reports were recorded in Microsoft Excel spre
 
 Step 1: Upload dataset ("noiseprof.csv") into R
 To upload data frame in .csv use the following function and assign to a new variables (optional). There are many other ways to load data from .csv as explained in YouTube
-
 ```{r}
-noisedf <- read.csv(noiseprof.csv, na.strings = c("", "NA"))
+noisedf <- read.csv(noiseprof.csv, stringsAsFactors = TRUE, na.strings = c("", "NA"))
 ```
 
 Another way you may consider is to upload your dataset in Excel native file (.xlsx or .xls). In doing so, you are required to install "XLConnect" package from CRAN database. This is a matter of preference and just provide you with the alternative way to upload your dataset into R for further analysis.
-
 ```{r}
 install.packages("XLConnect") #to install package within R environment
 library("XLconnect") #required in every new session to enable functions within the package
@@ -42,7 +39,6 @@ library("XLconnect") #required in every new session to enable functions within t
 
 Step 2: Explore "noiseprof.csv" 
 The following are functions which can be used to explore uploaded data frame. Use help function within R to understand the arguments / values required to use respective functions
-
 ```{r}
 dim() # to have overview of the dataframe (row, column)
 head() # use together with tail() to check consistentcy of the dataframe
@@ -52,7 +48,6 @@ str() # use to understand structure / category of the variables. here we can ide
 ```
 
 # List of variables under study
-
 ```{r}
 names(noisedf)
 ```
@@ -65,15 +60,25 @@ Selection of specific variables of interest will be explained under data prepara
 
 A) Exploration 
 
-The following functions are useful in exploring the data set:
-
+0. Read table
 ```{r}
 noisedf1 <- tbl_df(noisedf) # pass your data frame using tbl_df function (e.g., noisedf). Check as.tibble()
+```
 
+
+1. Summary
+```{r}
 summarize()
 
 summarize(by_bu, mean(oeltype)) # as example
 
+summary(split(noisedf1, noisedf1$bu)) # provide summary by business
+
+```
+
+
+2. Investigation by subset (e.g., business, seg)
+```{r}
 which() # to locate missing data, return TRUE values to logical test pass to the function
 
 noisedf1 [which(noisedf1$oel >= 140), ] # as example to look for observations within noisedf1 where oeltype = peak_dB, oel => 140, which()only find TRUE value
@@ -82,7 +87,17 @@ noisedf1[noisedf1$oel >= 140, ] # same as above
 
 noisedf1 [noisedf1$variables] # can use to access variables of interest, and apply function as desired.
 
-fin[fin$Revenue >= 9746272, ] #
+noisedf1 [noisedf1$oel >= 140, ] # as example: access all meet the criteria specified in the filter
+
+```
+
+
+3. Graphic
+
+The following functions are useful in exploring the data set:
+```{r}
+boxplot(noisedf1[noisedf1$oel & noisedf1$seg == "shiftProd"])
+
 
 ```
 
@@ -116,12 +131,16 @@ group_by(noisedf, oeltype = peak_dB) # as example
 C) Missing data
 
 0. Identify
-```{r}
-is.na()
 
+The are many approach in R to identify missing data or NA values within the dataset. The idea is to find and explore appropriate treatement to the missing data or NA as described in the following steps. below are several codes relevant to the process.
+```{r}
+
+noisedf1[!complete.cases(noisedf1), ] # searching for NA / empty cells or incomplete rows across dataset
 noisedf1 [!complete.cases(noisedf1), ]
 noisedf1[is.na(noisedf1$NRReffective), ] # this will highlight the values == "NA" in NRReffective column of noisedf1 dataset
 noisedf1[is.na(noisedf1$NRReffective) & noisedf1$bu == "dsgas", ] # similar to previous, this add more criteria to the filter ([]) - "in dsgas"
+
+
 
 ```
 
@@ -165,6 +184,12 @@ boxplot()
 
 
 # Statistical Inferences
+
+```{r}
+norm()
+t.test()
+
+```
 
 
 # Exploratory Data Analysis (Visual)
