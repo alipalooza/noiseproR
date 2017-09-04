@@ -98,6 +98,7 @@ The following functions are useful in exploring the data set:
 ```{r}
 boxplot(noisedf1[noisedf1$oel & noisedf1$seg == "shiftProd"])
 
+qplot(seg, peak, data = noisedf1)
 
 ```
 
@@ -170,16 +171,23 @@ noisedf2 <- noisedf1 [!is.na(noisedf1), ] # opposite of is.na - identifying row 
 
 # Descriptive Data Analysis
 
-1. 5 summary
+1. Descriptive summary
 
 ```{r}
+hist()
+qplot(peak, data = noised1, color = bu)
+
+xyplot (peak ~ bu | seg, data = noisedf1) # explore lattice system
+
+summary(noisedf1$dose) # summary for specific variables
+
 quantile()
 
 percent_rank()
 
 boxplot()
-
-
+qplot(bu, peak, data = noisedf1, geom = "boxplot") # boxplot of peak by business
+qplot(seg, peak, data = noisedf1, geom = "boxplot") # boxplot of peak by business
 ```
 
 
@@ -197,10 +205,18 @@ t.test()
 this sections will provide codes to produce graph / diagram in the text
 
 1. boxplot
+boxplot(peak~seg, noisedf1)
+d <- noisedf 1
+d + geom_jitter + geom_boxplot (aes(x = bu, y = oel))
 
 2. scatterplot
 
+with(noisedf1, plot(stel, seg))
+qplot(displ, hwy, data = mpg, facets = .~ drv) # display by oeltype?
+g <- ggplot(mpg, aes(displ, hwy))
+g + geom_point() + geom_smooth() #draw confidence band within the scatter plot
 
+# there are several plotting system - for consistency in looks and feel, ggplot is main choice unless other plotting system is better in representing the data.
 
 
 # Learn R using Swirl
