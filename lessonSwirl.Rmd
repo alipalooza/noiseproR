@@ -96,6 +96,8 @@ noisedf1 [noisedf1$oel >= 140, ] # as example: access all meet the criteria spec
 
 The following functions are useful in exploring the data set:
 ```{r}
+library(ggplot2)
+
 boxplot(noisedf1[noisedf1$oel & noisedf1$seg == "shiftProd"])
 
 qplot(seg, peak, data = noisedf1)
@@ -105,6 +107,8 @@ qplot(seg, peak, data = noisedf1)
 B) Treatment / Wrangling
 
 ```{r}
+
+library(dplyr)
 
 gsub() # use to convert factor to integer by replacing characters (e.g., "$", "%"")
 
